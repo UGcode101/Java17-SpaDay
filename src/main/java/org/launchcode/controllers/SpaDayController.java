@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
-
 @Controller
 public class SpaDayController {
 
@@ -20,7 +19,7 @@ public class SpaDayController {
             return facialType.equals("Rejuvenating") || facialType.equals("Hydrofacial");
         }
         else {
-            return true;
+            return true;  // Assuming 'normal' or any other types get all treatments
         }
     }
 
@@ -49,7 +48,6 @@ public class SpaDayController {
 
     @PostMapping(value="")
     public String spaMenu(@RequestParam String name, @RequestParam String skintype, @RequestParam String manipedi, Model model) {
-
         ArrayList<String> facials = new ArrayList<>();
         facials.add("Microdermabrasion");
         facials.add("Hydrofacial");
@@ -57,12 +55,17 @@ public class SpaDayController {
         facials.add("Enzyme Peel");
 
         ArrayList<String> appropriateFacials = new ArrayList<>();
-        for (int i = 0; i < facials.size(); i ++) {
-            if (checkSkinType(skintype,facials.get(i))) {
+        for (int i = 0; i < facials.size(); i++) {
+            if (checkSkinType(skintype, facials.get(i))) {
                 appropriateFacials.add(facials.get(i));
             }
         }
 
-        return "menu";
+        model.addAttribute("name", name);
+        model.addAttribute("skintype", skintype);
+        model.addAttribute("manipedi", manipedi);
+        model.addAttribute("appropriateFacials", appropriateFacials);
+
+        return "menu";  // Make sure 'menu.html' is located under 'src/main/resources/templates'
     }
 }
